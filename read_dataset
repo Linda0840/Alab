@@ -51,3 +51,76 @@ flat_df.columns = (
 hashed_clarity_reports = pd.concat([df.reset_index(drop=True), flat_df.reset_index(drop=True)], axis=1)
 
 hashed_clarity_reports
+
+
+
+################################################################## Ivy: hashed_emailage_reports.csv ###################################################################################
+import csv
+import pandas as pd
+
+df = pd.read_csv(
+    "hashed_emailage_reports.csv",
+    sep="|",
+    engine="python",
+    encoding="utf-8-sig",
+    quoting=csv.QUOTE_NONE,   # ← treat " as a normal character
+    escapechar="\\",          # backslash-escaped quotes like \" stay intact
+    on_bad_lines="skip"       # or "warn"
+)
+
+print(df.shape)
+print(df.head(5))
+
+import json
+import pandas as pd
+from pandas import json_normalize
+
+JSON_COL = "CREDIT_REPORT"
+
+def parse_credit_report(x):
+    if pd.isna(x):
+        return None
+    try:
+        return json.loads(x)
+    except Exception:
+        return None
+
+parsed = df[JSON_COL].apply(parse_credit_report)
+
+def _prefix_keys(dct, prefix):
+    return {f"{prefix}.{k}": v for k, v in (dct or {}).items()}
+
+def extract_all(d):
+    if not isinstance(d, dict):
+        return {}
+    r = d.get("response", {}) or {}
+    q = r.get("query", {}) or {}
+    # Remove 'results' so we don't duplicate the item subtree
+    q_no_results = {k: v for k, v in q.items() if k != "results"}
+
+    item = (((q.get("results", {}) or {}).get("item", {}) or {}))
+    rstatus = r.get("responseStatus", {}) or {}
+
+    # Namespace query + responseStatus to avoid collisions with item keys
+    out = {}
+    out.update(_prefix_keys(q_no_results, "query"))
+    out.update(item)  # item keys stay unprefixed (as before)
+    out.update(_prefix_keys(rstatus, "responseStatus"))
+    return out
+
+combined = parsed.apply(extract_all)
+
+flat_df = json_normalize(combined.tolist(), sep=".")
+# Clean names (same as yours)
+flat_df.columns = (
+    pd.Index(flat_df.columns)
+      .str.replace(r"[^A-Za-z0-9]+", "_", regex=True)
+      .str.strip("_")
+      .str.lower()
+)
+
+# Drop exact duplicate column names if any arose after cleaning
+flat_df = flat_df.loc[:, ~flat_df.columns.duplicated()]
+
+hashed_emailage_reports = pd.concat([df.reset_index(drop=True), flat_df.reset_index(drop=True)], axis=1)
+print(hashed_emailage_reports.head(5))

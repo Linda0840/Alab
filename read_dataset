@@ -124,3 +124,101 @@ flat_df = flat_df.loc[:, ~flat_df.columns.duplicated()]
 
 hashed_emailage_reports = pd.concat([df.reset_index(drop=True), flat_df.reset_index(drop=True)], axis=1)
 print(hashed_emailage_reports.head(5))
+
+
+
+
+################################################################## Frank: hashed_iovation_reports.csv ################################################
+import csv
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv(
+    "hashed_iovation_reports.csv.gz",
+    sep="|",
+    engine="python",
+    encoding="utf-8-sig",
+    quoting=csv.QUOTE_NONE,   # ← treat " as a normal character
+    escapechar="\\",          # backslash-escaped quotes like \" stay intact
+    #nrows=10000,
+    on_bad_lines="skip"       # or "warn"
+)
+
+
+import json
+import pandas as pd
+from collections.abc import Mapping
+
+# -----------------------------
+# Utilities from before
+# -----------------------------
+def normalize_key(k: str) -> str:
+    if ":" in k:
+        k = k.split(":", 1)[1]
+    if k.startswith("@"):
+        return "attr." + k[1:]
+    if k == "#text":
+        return "text"
+    return k
+
+def flatten(obj, parent_key="", sep="."):
+    flat = {}
+    if isinstance(obj, Mapping):
+        for k, v in obj.items():
+            nk = normalize_key(k)
+            key = f"{parent_key}{sep}{nk}" if parent_key else nk
+            flat.update(flatten(v, key, sep))
+    elif isinstance(obj, list):
+        for i, v in enumerate(obj):
+            key = f"{parent_key}[{i}]"
+            flat.update(flatten(v, key, sep))
+    else:
+        flat[parent_key] = obj
+    return flat
+
+def get_details_map(d: dict) -> dict:
+    try:
+        env = d.get("SOAP-ENV:Envelope", {})
+        body = env.get("SOAP-ENV:Body", {})
+        resp = body.get("namesp1:CheckTransactionDetailsResponse", {})
+        details = resp.get("namesp1:details", {}).get("namesp1:detail", [])
+        out = {}
+        for item in details:
+            name = item.get("namesp1:name")
+            value = item.get("namesp1:value")
+            if name is not None:
+                out[name] = value
+        return out
+    except Exception:
+        return {}
+
+# -----------------------------
+# Apply to all CREDIT_REPORT entries
+# -----------------------------
+def parse_credit_report(json_str):
+    try:
+        data = json.loads(json_str)
+        details = get_details_map(data)
+        return details
+    except Exception:
+        return {}
+
+# Apply to all rows
+df_features = df_explore['CREDIT_REPORT'].apply(parse_credit_report)
+
+# df_features is now a Series of dicts
+# Convert to DataFrame (keys become columns)
+df_iovation = pd.DataFrame(df_features.tolist())
+
+
+
+
+
+
+
+
+
+
+
+
+

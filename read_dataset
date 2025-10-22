@@ -1,8 +1,20 @@
 
-##################################################################################### Linda #####################################################################################
+
+################################################################## Linda: hashed_clarity_reports.csv ###################################################################################
 import json
 import pandas as pd
 from pandas import json_normalize
+
+df = pd.read_csv(
+    "hashed_clarity_reports.csv",
+    sep="|",
+    engine="python",
+    encoding="utf-8-sig",
+    quoting=csv.QUOTE_NONE,   # ← treat " as a normal character
+    escapechar="\\",          # backslash-escaped quotes like \" stay intact
+    nrows=1000,
+    on_bad_lines="skip"       # or "warn"
+)
 
 JSON_COL = "CREDIT_REPORT"  # adjust to your actual column name
 

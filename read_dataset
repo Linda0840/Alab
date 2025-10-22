@@ -48,5 +48,6 @@ flat_df.columns = (
 )
 
 # --- 6. Merge back with original df ---
-df_flat = pd.concat([df.reset_index(drop=True), flat_df.reset_index(drop=True)], axis=1)
-df_flat
+hashed_clarity_reports = pd.concat([df.reset_index(drop=True), flat_df.reset_index(drop=True)], axis=1)
+
+hashed_clarity_reports

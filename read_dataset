@@ -1,0 +1,38 @@
+import json
+import pandas as pd
+from pandas import json_normalize
+
+JSON_COL = "CREDIT_REPORT"  # adjust to your actual column name
+
+# --- 1. Safe parser for JSON strings ---
+def parse_credit_report(x):
+    """Convert the nested string into a dict."""
+    if pd.isna(x):
+        return None
+    try:
+        # The first loads() turns string → stringified JSON
+        # The second loads() turns it into a dictionary
+        return json.loads(json.loads(x))
+    except Exception:
+        return None
+
+# --- 2. Parse all rows ---
+parsed = df[JSON_COL].apply(parse_credit_report)
+
+# --- 3. Extract the 'clear-bank-behavior' part ---
+clear_behavior = parsed.apply(lambda d: d.get("clear-bank-behavior", {}) if isinstance(d, dict) else {})
+
+# --- 4. Flatten each JSON dict into its own row ---
+flat_df = json_normalize(clear_behavior.tolist(), sep=".")
+
+# --- 5. Clean column names (optional but recommended) ---
+flat_df.columns = (
+    pd.Index(flat_df.columns)
+    .str.replace(r"[^A-Za-z0-9]+", "_", regex=True)
+    .str.strip("_")
+    .str.lower()
+)
+
+# --- 6. Merge back with original df ---
+df_flat = pd.concat([df.reset_index(drop=True), flat_df.reset_index(drop=True)], axis=1)
+df_flat

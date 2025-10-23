@@ -15,7 +15,7 @@ df = pd.read_csv(
     encoding="utf-8-sig",
     quoting=csv.QUOTE_NONE,   # ← treat " as a normal character
     escapechar="\\",          # backslash-escaped quotes like \" stay intact
-    nrows=1000,
+    #nrows=1000,
     on_bad_lines="skip"       # or "warn"
 )
 

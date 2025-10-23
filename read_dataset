@@ -1,9 +1,12 @@
-
-
-################################################################## Linda: hashed_clarity_reports.csv ###################################################################################
 import json
 import pandas as pd
 from pandas import json_normalize
+import csv
+import numpy as np
+from collections.abc import Mapping
+
+
+################################################################## Linda: hashed_clarity_reports.csv ###################################################################################
 
 df = pd.read_csv(
     "hashed_clarity_reports.csv",
@@ -55,8 +58,6 @@ hashed_clarity_reports
 
 
 ################################################################## Ivy: hashed_emailage_reports.csv ###################################################################################
-import csv
-import pandas as pd
 
 df = pd.read_csv(
     "hashed_emailage_reports.csv",
@@ -129,9 +130,6 @@ print(hashed_emailage_reports.head(5))
 
 
 ################################################################## Frank: hashed_iovation_reports.csv ################################################
-import csv
-import pandas as pd
-import numpy as np
 
 df = pd.read_csv(
     "hashed_iovation_reports.csv.gz",
@@ -143,11 +141,6 @@ df = pd.read_csv(
     #nrows=10000,
     on_bad_lines="skip"       # or "warn"
 )
-
-
-import json
-import pandas as pd
-from collections.abc import Mapping
 
 # -----------------------------
 # Utilities from before
@@ -216,8 +209,6 @@ df_iovation = pd.DataFrame(df_features.tolist())
 
 
 ################################################################## Ivy: hashed_iovation_reports.csv ################################################
-import csv
-import pandas as pd
 
 customer_changes = pd.read_csv(
     "customer_changes.csv",

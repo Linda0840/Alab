@@ -215,8 +215,22 @@ df_iovation = pd.DataFrame(df_features.tolist())
 
 
 
+################################################################## Ivy: hashed_iovation_reports.csv ################################################
+import csv
+import pandas as pd
 
+customer_changes = pd.read_csv(
+    "customer_changes.csv",
+    sep="|",
+    engine="python",
+    encoding="utf-8-sig",
+    quoting=csv.QUOTE_NONE,   # ← treat " as a normal character
+    escapechar="\\",          # backslash-escaped quotes like \" stay intact
+    on_bad_lines="skip"       # or "warn"
+)
 
+print(customer_changes.shape)
+print(customer_changes.head(5))
 
 
 

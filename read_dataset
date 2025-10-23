@@ -225,5 +225,23 @@ print(customer_changes.head(5))
 
 
 
+################################################################## Ivy: training.csv ################################################
+import csv
+import pandas as pd
+
+training = pd.read_csv(
+    "training.csv",
+    sep="|",
+    engine="python",
+    encoding="utf-8-sig",
+    quoting=csv.QUOTE_NONE,   # ← treat " as a normal character
+    escapechar="\\",          # backslash-escaped quotes like \" stay intact
+    on_bad_lines="skip"       # or "warn"
+)
+
+print(training.shape)
+print(training.head(5))
+
+
 
 

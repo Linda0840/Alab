@@ -12,7 +12,7 @@
 - Suppose you have merged your Feature Set into the Target Set
 - You can VISUALIZE the Fraud Rate in your feature. Call the Numeric Version if your feature is Numeric; Call the Categorical Version if your feature is categorical
 - For numeric feature, the function returns 2 Plots: Plot 1 is the fraud rate comparison between Non NAN Values and NAN Values in the feature; Plot 2 is a Quantiled Plot of fraud rate of Non NAN Values in the feature.
-- For categorical feature, the function returns 1 Plot: fraud rate comparison among all categories(including the nan category) --> make it easier to understand!
+- For categorical feature, the function returns 1 Plot: fraud rate comparison among all categories(including the NAN category)
 
 
 # To_Probabilities.py

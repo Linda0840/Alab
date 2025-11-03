@@ -7,6 +7,7 @@ Target.csv
 Target_Merging.py
 - You should always use this file to merge your Feature Set into the Target Set
 
+
 Feature_Binned_Visual.py(See Binned_Visual.ipynb for examples)
 - Suppose you have merged your Feature Set into the Target Set
 - You can VISUALIZE the Fraud Rate in your feature. Call the Numeric Version if your feature is Numeric; Call the Categorical Version if your feature is categorical

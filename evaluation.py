@@ -32,7 +32,5 @@ def evaluate_fraud_model(y_true, y_pred_prob, threshold=0.5):
         "Precision": precision,
         "Recall": recall,
         "Accuracy": acc,
-        "F1": f1,
-        "Decision": decision,
-        "Reason": reason
+        "F1": f1
     }

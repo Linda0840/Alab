@@ -1,3 +1,5 @@
+import numpy as np
+
 def to_probabilities(x):
     """
     Convert arbitrary feature values into normalized probabilities.

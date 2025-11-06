@@ -208,7 +208,7 @@ df_iovation = pd.DataFrame(df_features.tolist())
 
 
 
-################################################################## Ivy: hashed_iovation_reports.csv ################################################
+################################################################## Ivy: customer_changes.csv ################################################
 
 customer_changes = pd.read_csv(
     "customer_changes.csv",

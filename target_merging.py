@@ -33,6 +33,6 @@ def merge_on_column(result_df: pd.DataFrame, feature_df: pd.DataFrame, merge_col
     merged = pd.merge(result_df, feature_df, how='inner', on=merge_col)
         
     # Drop only rows where the target column is nan
-    merged = merged.dropna(subset=['target']).reset_index(drop=True)
+    merged = merged.dropna(subset=['FRAUD_FLG_TARGET']).reset_index(drop=True)
     
     return merged

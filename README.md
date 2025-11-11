@@ -15,11 +15,6 @@
 - For categorical feature, the function returns 1 Plot: fraud rate comparison among all categories(including the NAN category)
 
 
-# To_Probabilities.py
-- convert your feature values into probabilities(using softmax)
-- enable confusion matrix to evaluate the feature
-
-
 # Evaluation.py
-- Make sure you feature is converted into probabilities using To_Probabilities.py
+- Make sure you feature is BINARY
 - Return the metrics in the confusion matrix: acc, precision, recall, and F1

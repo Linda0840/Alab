@@ -21,3 +21,4 @@
 
 # downsample.py
 - downsample the dataset and randomly remove ___% of the entries where the flg is True
+- downsample your training dataset only! DO NOT DOWNSAMPLE your test dataset!!!!!!!!!!!

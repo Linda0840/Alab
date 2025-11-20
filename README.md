@@ -18,3 +18,6 @@
 # Evaluation.py
 - Make sure you feature is BINARY
 - Return the metrics in the confusion matrix: acc, precision, recall, and F1
+
+# downsample.py
+- downsample the dataset and randomly remove ___% of the entries where the flg is True
